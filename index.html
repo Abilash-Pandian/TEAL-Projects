@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAL Diwali Wishes</title>
+    <link href="https://fonts.cdnjs.com/css?family=Poppins:400,600|Montserrat:400,600" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .curtain-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            display: flex;
+        }
+
+        .curtain {
+            position: relative;
+            width: 50%;
+            height: 100%;
+            display: flex;
+        }
+
+        .curtain.left {
+            transform-origin: left;
+            animation: curtainOpenLeft 4s ease-out forwards;
+        }
+
+        .curtain.right {
+            transform-origin: right;
+            animation: curtainOpenRight 4s ease-out forwards;
+        }
+
+        @keyframes curtainOpenLeft {
+            0% { transform: scaleX(1); }
+            100% { transform: scaleX(0); }
+        }
+
+        @keyframes curtainOpenRight {
+            0% { transform: scaleX(1); }
+            100% { transform: scaleX(0); }
+        }
+
+        .curtain-fold {
+            flex: 1;
+            height: 100%;
+            background: linear-gradient(90deg, #6b0000, #8B0000);
+            border-right: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 
+                inset 5px 0 15px rgba(0,0,0,0.4),
+                inset -5px 0 15px rgba(0,0,0,0.4);
+            transform-origin: center top;
+        }
+
+        .right .curtain-fold {
+            background: linear-gradient(270deg, #6b0000, #8B0000);
+            border-left: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .curtain-fold:nth-child(odd) { transform: skewY(2deg); }
+        .curtain-fold:nth-child(even) { transform: skewY(-2deg); }
+
+        .content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 3;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1400px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 2vh 2vw;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 183, 183, 0.3);
+            box-shadow: 0 0 30px rgba(0, 183, 183, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+            opacity: 0;
+            animation: fadeIn 2s 3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .logo {
+            width: 350px;
+            max-width: 80%;
+            margin: 2vh auto;
+            animation: logoGlow 2s infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 5px rgba(0, 183, 183, 0.5)); }
+            to { filter: drop-shadow(0 0 15px rgba(0, 183, 183, 0.8)); }
+        }
+
+        .greeting {
+            font-size: min(5rem, 8vw);
+            color: #FFD700;
+            margin: 2vh 0;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.3),
+                0 0 30px rgba(255, 215, 0, 0.2);
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700; }
+            to { text-shadow: 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700; }
+        }
+
+        .diya-container {
+            display: flex;
+            justify-content: center;
+            gap: min(40px, 4vw);
+            margin: 2vh 0;
+        }
+
+        .diya {
+            position: relative;
+            width: min(80px, 8vw);
+            height: min(40px, 4vw);
+            background: linear-gradient(45deg, #CD853F, #8B4513);
+            border-radius: 50% 50% 0 0;
+            animation: diyaGlow 1.5s infinite alternate;
+        }
+
+        @keyframes diyaGlow {
+            from { box-shadow: 0 0 10px rgba(255, 69, 0, 0.5); }
+            to { box-shadow: 0 0 20px rgba(255, 69, 0, 0.8); }
+        }
+
+        .flame {
+            width: min(20px, 2vw);
+            height: min(40px, 4vw);
+            background: linear-gradient(#FFA500, #FF4500);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -90%;
+            left: 37%;
+            filter: blur(2px);
+            animation: flicker 0.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 1; }
+            100% { transform: scale(0.95) rotate(2deg); opacity: 0.8; }
+        }
+
+        .message {
+            color: #FFF;
+            font-size: min(1.8rem, 2.5vw);
+            line-height: 1.6;
+            margin: 3vh auto;
+            padding: 0 2vw;
+            max-width: 1000px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .signature {
+            color: #00B7B7;
+            font-size: min(1.4rem, 2vw);
+            font-weight: 600;
+            margin: 2vh 0;
+            animation: signatureGlow 2s infinite alternate;
+        }
+
+        @keyframes signatureGlow {
+            from { text-shadow: 0 0 5px rgba(0, 183, 183, 0.5); }
+            to { text-shadow: 0 0 15px rgba(0, 183, 183, 0.8); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 183, 183, 0.5);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 183, 183, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="curtain-container">
+        <div class="curtain left">
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+        </div>
+        <div class="curtain right">
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <img src="Teal logo.jpeg" alt="TEAL Logo" class="logo">
+        
+        <h1 class="greeting">✨ Happy Diwali ✨</h1>
+        
+        <div class="diya-container">
+            <div class="diya"><div class="flame"></div></div>
+            <div class="diya"><div class="flame"></div></div>
+            <div class="diya"><div class="flame"></div></div>
+        </div>
+
+        <div class="message">
+            Dear Valued Team Members,<br><br>
+            As we celebrate this festival of lights, we illuminate not just our surroundings but our technological future at TEAL. Your innovative spirit and engineering excellence have been the driving force behind our automation solutions, brightening the path of industrial progress.<br><br>
+            Each of you represents a vital component in our well-engineered machinery of success. Your precision in work, automated efficiency, and technical brilliance have contributed to making TEAL a beacon of engineering excellence.<br><br>
+            May this Diwali energize your circuits with joy, program your path with prosperity, and automate your journey to success. Let's continue to engineer dreams, automate possibilities, and illuminate the future of technology together!
+        </div>
+
+        <div class="signature">
+            - Team TEAL<br>
+            Titan Engineering & Automation Limited
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener("resize", resizeCanvas, false);
+        window.addEventListener("DOMContentLoaded", onLoad, false);
+        
+        window.requestAnimationFrame = 
+            window.requestAnimationFrame       || 
+            window.webkitRequestAnimationFrame || 
+            window.mozRequestAnimationFrame    || 
+            window.oRequestAnimationFrame      || 
+            window.msRequestAnimationFrame     || 
+            function (callback) {
+                window.setTimeout(callback, 1000/60);
+            };
+        
+        var canvas, ctx, w, h, particles = [], probability = 0.06,
+            xPoint, yPoint;
+        
+        function onLoad() {
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");
+            resizeCanvas();
+            
+            window.requestAnimationFrame(updateWorld);
+        } 
+        
+        function resizeCanvas() {
+            if (!!canvas) {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+        } 
+        
+        function updateWorld() {
+            update();
+            paint();
+            window.requestAnimationFrame(updateWorld);
+        } 
+        
+        function update() {
+            if (particles.length < 500 && Math.random() < probability) {
+                createFirework();
+            }
+            var alive = [];
+            for (var i=0; i<particles.length; i++) {
+                if (particles[i].move()) {
+                    alive.push(particles[i]);
+                }
+            }
+            particles = alive;
+        } 
+        
+        function paint() {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = "rgba(0,0,0,0.1)";
+            ctx.fillRect(0, 0, w, h);
+            ctx.globalCompositeOperation = 'lighter';
+            for (var i=0; i<particles.length; i++) {
+                particles[i].draw(ctx);
+            }
+        } 
+        
+        function createFirework() {
+            xPoint = Math.random()*(w-200)+100;
+            yPoint = Math.random()*(h-200)+100;
+            var nFire = Math.random()*50+100;
+            var c = "rgb("+(~~(Math.random()*200+55))+","
+                 +(~~(Math.random()*200+55))+","+(~~(Math.random()*200+55))+")";
+            for (var i=0; i<nFire; i++) {
+                var particle = new Particle();
+                particle.color = c;
+                var vy = Math.sqrt(25-particle.vx*particle.vx);
+                if (Math.abs(particle.vy) > vy) {
+                    particle.vy = particle.vy>0 ? vy: -vy;
+                }
+                particles.push(particle);
+            }
+        } 
+        
+        function Particle() {
+            this.w = this.h = Math.random()*4+1;
+            
+            this.x = xPoint-this.w/2;
+            this.y = yPoint-this.h/2;
+            
+            this.vx = (Math.random()-0.5)*10;
+            this.vy = (Math.random()-0.5)*10;
+            
+            this.alpha = Math.random()*.5+.5;
+            
+            this.color;
+        } 
+        
+        Particle.prototype = {
+            gravity: 0.05,
+            move: function () {
+                this.x += this.vx;
+                this.vy += this.gravity;
+                this.y += this.vy;
+                this.alpha -= 0.01;
+                if (this.x <= -this.w || this.x >= screen.width ||
+                    this.y >= screen.height ||
+                    this.alpha <= 0) {
+                        return false;
+                }
+                return true;
+            },
+            draw: function (c) {
+                c.save();
+                c.beginPath();
+                
+                c.translate(this.x+this.w/2, this.y+this.h/2);
+                c.arc(0, 0, this.w, 0, Math.PI*2);
+                c.fillStyle = this.color;
+                c.globalAlpha = this.alpha;
+                
+                c.closePath();
+                c.fill();
+                c.restore();
+            }
+        }
+    </script>
+</body>
+</html>
